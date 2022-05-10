@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "react-query";
 import { StatusSelect } from "./StatusSelect";
-
 export default function IssueStatus({ status, issueNumber }) {
   const queryClient = useQueryClient();
+
   const setStatus = useMutation(
-    () => {
-      fetch(`/api/issues/${issueNumber}`, {
+    (status) => {
+      return fetch(`/api/issues/${issueNumber}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
@@ -35,7 +35,7 @@ export default function IssueStatus({ status, issueNumber }) {
         rollback();
       },
       onSettled: () => {
-        queryClient.invalidateQueries(["issue", issueNumber], { exact: true });
+        queryClient.invalidateQueries(["issues", issueNumber], { exact: true });
       },
     }
   );
